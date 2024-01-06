@@ -25,16 +25,16 @@ async def query_dns(hostname, r_type='A'):
         return (True, hostname, r_type, rdatas, "OK")
 
     except dns.resolver.NoAnswer as err:
-        print(f"NoAnswer: {err}")
+        print(f"NoAnswer: ({hostname}:{r_type}) {err}")
         return (False, hostname, r_type, None, "Error: NoAnswer")
     except dns.resolver.NoNameservers as err:
-        print(f"NoNameservers: {err}")
+        print(f"NoNameservers: ({hostname}:{r_type}) {err}")
         return (False, hostname, r_type, None, "Error: NoNameservers")
     except dns.resolver.NXDOMAIN as err:
-        print(f"NXDOMAIN: {err}")
+        print(f"NXDOMAIN: ({hostname}:{r_type}) {err}")
         return (False, hostname, r_type, None, "Error: NXDOMAIN")
     except Exception as err:
-        print(f"Unexpected ({fqdn}:{r_type}) {err}, {type(err)}")
+        print(f"Unexpected ({hostname}:{r_type}) {err}, {type(err)}")
         return (False, hostname, r_type, None, f"Error: Unexpected: {err} :: {type(err)}")
 
 

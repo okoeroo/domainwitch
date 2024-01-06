@@ -7,7 +7,8 @@ PREFIX = "redirect_http_"
 
 
 def huntredirect_get_defaults() -> dict:
-    return {"80": "http", "443": "https", "8080": "http"}
+    return {"80": "http", "443": "https", "8000": "http", "8080": "http",
+            "8088": "http", "8081": "http", "8181": "http", "8443": "https"}
 
 
 def huntredirect_fieldnames() -> list[str]:

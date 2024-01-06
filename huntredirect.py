@@ -2,6 +2,16 @@ from httpx import Response
 from supporthttp import build_url, fetch_http
 
 
+def huntredirect_get_defaults() -> dict:
+    return {"80": "http", "443": "https", "8080": "http"}
+
+def huntredirect_fieldnames() -> list[str]:
+    fieldnames = []
+    port_list = huntredirect_get_defaults()
+    for port, scheme in port_list.items():
+        fieldnames.append(f"redirect_http_{port}")
+    return fieldnames
+
 # Returns a list of tuples with url, http status_code, location/None
 def analyse_http(url: str):
     r = fetch_http(url, timeout=4)
@@ -16,7 +26,7 @@ def analyse_http(url: str):
 
 
 def huntredirect(prey: dict, target: str):
-    port_list = {"80": "http", "443": "https", "8080": "http"}
+    port_list = huntredirect_get_defaults()
 
     for port, scheme in port_list.items():
         if prey[f"port_{port}"]:

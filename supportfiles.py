@@ -1,4 +1,7 @@
 import csv
+from huntdns import huntdns_fieldnames
+from hunttcp import hunttcp_fieldnames
+from huntredirect import huntredirect_fieldnames
 
 
 def openfile(filename: str) -> list:
@@ -14,16 +17,10 @@ def write_csv(outputfile: str, output_dict_list: dict) -> None:
         raise RuntimeError("There is no output to write.")
 
     # Fetch fieldnames from first line of the dict keys
-    fieldnames = [x for x in output_dict_list[0].keys()]
-
-    # reorder fields: FQDN in front
-    old_index = fieldnames.index('FQDN')
-    fieldnames.insert(0, fieldnames.pop(old_index))
-
-    # HACK
-    port_list = {"80": "http", "443": "https", "8080": "http"}
-    for port, scheme in port_list.items():
-        fieldnames.append(f"redirect_http_{port}")
+    fieldnames = ['FQDN'] + \
+                    huntdns_fieldnames() + \
+                    hunttcp_fieldnames() + \
+                    huntredirect_fieldnames()
 
     # write csv
     with open(outputfile, 'w') as csvfile:

@@ -6,6 +6,10 @@ def hunttcp_get_defaults() -> list[int]:
             1723, 3306, 3389, 5900, 8080, 5060, 5061]
 
 
+def hunttcp_fieldnames() -> list[str]:
+    return [f"port_{x}" for x in hunttcp_get_defaults()]
+
+
 async def check_service(host, port, timeout=5):
     try:
         # Connect with a specified timeout
@@ -30,7 +34,7 @@ async def check_services(services, timeout=5):
     return await asyncio.gather(*tasks)
 
 
-def reformat_results(results: list[tuple], prey: str):
+def reformat_results(results: list[tuple], prey):
     for r in results:
         # Format is connection booling, target host, port
         id = 'port_' + str(r[2])

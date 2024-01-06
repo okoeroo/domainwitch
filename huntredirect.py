@@ -8,7 +8,8 @@ PREFIX = "redirect_http_"
 
 def huntredirect_get_defaults() -> dict:
     return {"80": "http", "443": "https", "8000": "http", "8080": "http",
-            "8088": "http", "8081": "http", "8181": "http", "8443": "https"}
+    "8081": "http", "8088": "http", "8181": "http", "8443": "https", "8888":
+    "http"}
 
 
 def huntredirect_fieldnames() -> list[str]:
@@ -36,6 +37,9 @@ def huntredirect(prey: dict, target: str):
     port_list = huntredirect_get_defaults()
 
     for port, scheme in port_list.items():
+        if f"{PREFIX_TCP}{port}" not in prey:
+            continue
+
         if not prey[f"{PREFIX_TCP}{port}"]:
             prey[f"{PREFIX}{port}"] = f"n/a: no TCP to {port}"
             continue

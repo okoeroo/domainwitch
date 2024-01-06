@@ -3,8 +3,8 @@
 import sys
 
 from supportfiles   import write_csv, openfile
-from huntdns        import huntdns, huntdns_get_defaults
-from hunttcp        import hunttcp, hunttcp_get_defaults
+from huntdns        import huntdns
+from hunttcp        import hunttcp
 from huntredirect   import huntredirect
 
 

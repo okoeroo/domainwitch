@@ -8,28 +8,23 @@ def analyse_http(url: str):
         return None
 
     if r.status_code >= 300 and r.status_code < 400:
-        tup = analyse_http(r.headers['Location'])
+        # tup = analyse_http(r.headers['Location'])
         return (url, r.status_code, r.headers['Location'])
-    else:
-        return (url, r.status_code, None)
+
+    return (url, r.status_code, None)
 
 
 def huntredirect(prey: dict, target: str):
-    urls = [] # str
-    http_results = [] # list of tuple: url, status code, location
+    port_list = {"80": "http", "443": "https", "8080": "http"}
 
-    if prey['port_80']:
-        url = build_url(scheme='http', host=target, port=80)
-        urls.append(url)
-    elif prey['port_443']:
-        url = build_url(scheme='https', host=target, port=443)
-        urls.append(url)
+    for port, scheme in port_list.items():
+        if prey[f"port_{port}"]:
+            url = build_url(scheme=scheme, host=target, port=port)
+            tup = analyse_http(url)
+            if tup is None:
+                prey[f"redirect_http_{port}"] = None
+            else:
+                res_txt = f"url: {tup[0]} :: status: {tup[1]} -> location: {tup[2]}"
+                prey[f"redirect_http_{port}"] = res_txt
 
-    for url in urls:
-        tup = analyse_http(url)
-        http_results.append(tup)
-        res_txt = f"url: {tup[0]} :: status: {tup[1]} -> location: {tup[2]}"
-        print(res_txt)
-
-    prey['redirect'] = res_txt
     return prey

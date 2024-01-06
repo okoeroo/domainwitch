@@ -1,6 +1,12 @@
 import dns.resolver
 
 
+# target_r_types
+def huntdns_get_defaults() -> list[str]:
+    return ['A', 'AAAA', 'CNAME', 'TXT', 'HTTPS', 'CERT', 'SRV', 'CAA', 'MX',
+            'SOA', 'NS', 'TLSA']
+
+
 def resolver(fqdn, r_type) -> str:
     try:
         answers = dns.resolver.resolve(fqdn, r_type)

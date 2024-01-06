@@ -3,8 +3,8 @@
 import sys
 
 from supportfiles   import write_csv, openfile
-from huntdns        import huntdns
-from hunttcp        import hunttcp
+from huntdns        import huntdns, huntdns_get_defaults
+from hunttcp        import hunttcp, hunttcp_get_defaults
 from huntredirect   import huntredirect
 
 
@@ -17,13 +17,11 @@ def witchhunt(targets) -> None:
         prey['FQDN'] = target
 
         # Hunt DNS
-        target_r_types = ['A', 'AAAA', 'CNAME', 'TXT', 'HTTPS', 'CERT',
-                          'SRV', 'CAA', 'MX', 'SOA', 'NS', 'TLSA']
+        target_r_types = huntdns_get_defaults()
         prey = huntdns(prey, target_r_types, target)
 
         # Hunt TCP
-        target_tcp_ports = [21, 22, 25, 53, 80, 111, 135, 139, 443, 445, 465, 587,
-                            993, 995, 1723, 3306, 3389, 5900, 8080, 5060, 5061]
+        target_tcp_ports = hunttcp_get_defaults()
         prey = hunttcp(prey, target_tcp_ports, target)
 
         # Hunt HTTP redirect

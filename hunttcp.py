@@ -1,6 +1,11 @@
 import asyncio
 
 
+def hunttcp_get_defaults() -> list[int]:
+    return [21, 22, 25, 53, 80, 111, 135, 139, 443, 445, 465, 587, 993, 995,
+            1723, 3306, 3389, 5900, 8080, 5060, 5061]
+
+
 async def check_service(host, port, timeout=5):
     try:
         # Connect with a specified timeout

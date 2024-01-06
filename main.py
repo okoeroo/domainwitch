@@ -17,12 +17,10 @@ def witchhunt(targets) -> None:
         prey['FQDN'] = target
 
         # Hunt DNS
-        target_r_types = huntdns_get_defaults()
-        prey = huntdns(prey, target_r_types, target)
+        prey = huntdns(prey, target)
 
         # Hunt TCP
-        target_tcp_ports = hunttcp_get_defaults()
-        prey = hunttcp(prey, target_tcp_ports, target)
+        prey = hunttcp(prey, target)
 
         # Hunt HTTP redirect
         prey = huntredirect(prey, target)

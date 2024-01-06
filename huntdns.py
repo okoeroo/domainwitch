@@ -7,6 +7,7 @@ def huntdns_get_defaults() -> list[str]:
     return ['A', 'AAAA', 'CNAME', 'TXT', 'HTTPS', 'CERT', 'SRV', 'CAA', 'MX',
             'SOA', 'NS', 'TLSA']
 
+
 def huntdns_fieldnames() -> list[str]:
     return huntdns_get_defaults()
 
@@ -50,6 +51,7 @@ def reformat_results(results: list[tuple], prey):
 
     
 def huntdns(prey, target_r_types, target) -> None:
+    target_r_types = huntdns_get_defaults()
     results = asyncio.run(start_dns_scan(target, target_r_types))
     prey = reformat_results(results, prey)
 

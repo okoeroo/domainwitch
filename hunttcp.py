@@ -47,7 +47,9 @@ def reformat_results(results: list[tuple], prey):
     return prey
 
 
-def hunttcp(prey: dict, target_tcp_ports: list[int], target: str):
+def hunttcp(prey: dict, target: str):
+    target_tcp_ports = hunttcp_get_defaults()
+
     services = []
     for p in target_tcp_ports:
         services.append((target, p))

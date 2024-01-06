@@ -25,19 +25,23 @@ async def check_services(services, timeout=5):
     return await asyncio.gather(*tasks)
 
 
-def hunttcp(prey, target_tcp_ports, target):
+def reformat_results(results: list[tuple], prey: str):
+    for r in results:
+        # Format is connection booling, target host, port
+        id = 'port_' + str(r[2])
+        # Note: it is vital for other modules to use bool
+        prey[id] = r[0]
+
+    return prey
+
+
+def hunttcp(prey: dict, target_tcp_ports: list[int], target: str):
     services = []
     for p in target_tcp_ports:
         services.append((target, p))
 
-    timeout = 5
+    timeout = 4
     results = asyncio.run(check_services(services, timeout))
-    for r in results:
-        # Format is connection booling, target host, port
-        id = 'port_' + str(r[2])
-        if r[0]:
-            prey[id] = 'Open'
-        else:
-            prey[id] = 'Closed/blocked'
+    prey = reformat_results(results, prey)
 
     return prey

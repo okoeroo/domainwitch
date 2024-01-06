@@ -1,7 +1,7 @@
 import csv
 
 
-def openfile(filename) -> list:
+def openfile(filename: str) -> list:
     lines = tuple(open(filename, 'r'))
     with open(filename) as f:
         lines = f.read().splitlines()
@@ -9,7 +9,7 @@ def openfile(filename) -> list:
     return lines
 
 
-def write_csv(outputfile, output_dict_list) -> None:
+def write_csv(outputfile: str, output_dict_list: dict) -> None:
     if not output_dict_list and len(output_dict_list) == 0:
         raise RuntimeError("There is no output to write.")
 

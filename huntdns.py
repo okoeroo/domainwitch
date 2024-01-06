@@ -20,6 +20,9 @@ def resolver(fqdn, r_type) -> str:
     except dns.resolver.NoNameservers as err:
         print(f"NoNameservers: {err}")
         return "Error: NoNameservers"
+    except dns.resolver.NXDOMAIN as err:
+        print(f"NXDOMAIN: {err}")
+        return "Error: NXDOMAIN"
     except Exception as err:
         print(f"Unexpected ({fqdn}:{r_type}) {err}, {type(err)}")
         return f"Error: Unexpected: {err} :: {type(err)}"

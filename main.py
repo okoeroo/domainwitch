@@ -8,13 +8,18 @@ from hunttcp        import hunttcp, hunttcp_get_defaults
 from huntredirect   import huntredirect
 
 
+def init_prey(target: str) -> dict:
+    prey = {}
+    prey['FQDN'] = target
+    return prey
+
+
 def witchhunt(targets) -> None:
     out = []
 
     for target in targets:
         # Prep results
-        prey = {}
-        prey['FQDN'] = target
+        prey = init_prey(target)
 
         # Hunt DNS
         prey = huntdns(prey, target)

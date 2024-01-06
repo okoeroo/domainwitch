@@ -22,9 +22,8 @@ def witchhunt(targets) -> None:
         prey = huntdns(prey, target_r_types, target)
 
         # Hunt TCP
-        target_tcp_ports = [21, 22, 25, 53, 111, 135, 139, 443, 445, 465, 587,
-                            80, 443, 993, 995, 1723, 3306, 3389, 5900, 8080,
-                            5060, 5061]
+        target_tcp_ports = [21, 22, 25, 53, 80, 111, 135, 139, 443, 445, 465, 587,
+                            993, 995, 1723, 3306, 3389, 5900, 8080, 5060, 5061]
         prey = hunttcp(prey, target_tcp_ports, target)
 
         # Hunt HTTP redirect

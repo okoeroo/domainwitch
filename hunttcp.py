@@ -28,7 +28,7 @@ async def check_service(host, port, timeout=5):
         print(f"Service at {host}:{port} is down")
         return (False, host, port)
     except Exception as err:
-        print(f"Generic exception: {err}")
+        print(f"TCP error: ({host}:{port}) {err}")
         return (False, host, port)
 
 
@@ -54,7 +54,7 @@ def hunttcp(prey: dict, target: str):
     for p in target_tcp_ports:
         services.append((target, p))
 
-    timeout = 4
+    timeout = 3
     results = asyncio.run(check_services(services, timeout))
     prey = reformat_results(results, prey)
 

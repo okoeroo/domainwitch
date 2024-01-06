@@ -17,8 +17,8 @@ def witchhunt(targets) -> None:
         prey['FQDN'] = target
 
         # Hunt DNS
-        target_r_types = ['A', 'AAAA', 'CNAME', 'TXT', 'ALIAS', 'HTTPS', 'CERT',
-                          'SRV', 'CAA', 'MX', 'SOA', 'NS', 'RRSIG', 'TLSA']
+        target_r_types = ['A', 'AAAA', 'CNAME', 'TXT', 'HTTPS', 'CERT',
+                          'SRV', 'CAA', 'MX', 'SOA', 'NS', 'TLSA']
         prey = huntdns(prey, target_r_types, target)
 
         # Hunt TCP

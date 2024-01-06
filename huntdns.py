@@ -50,7 +50,7 @@ def reformat_results(results: list[tuple], prey):
     return prey
 
     
-def huntdns(prey, target_r_types, target) -> None:
+def huntdns(prey, target) -> None:
     target_r_types = huntdns_get_defaults()
     results = asyncio.run(start_dns_scan(target, target_r_types))
     prey = reformat_results(results, prey)

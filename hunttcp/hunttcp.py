@@ -18,7 +18,7 @@ def hunttcp_fieldnames() -> list[str]:
     return [f"{PREFIX}{x}" for x in hunttcp_get_defaults()]
 
 
-async def check_service(host, port, timeout=5):
+async def check_service(host, port, timeout=30):
     try:
         # Connect with a specified timeout
         reader, writer = await asyncio.wait_for(
@@ -51,6 +51,6 @@ def hunttcp_reformat_results_into_bag(results: list[tuple], bag):
 
 async def hunttcp_multi_target(targets):
     target_tcp_ports = hunttcp_get_defaults()
-    timeout = 5
+    timeout = 30
     tasks = [check_service(target, port, timeout) for target in targets for port in target_tcp_ports]
     return await asyncio.gather(*tasks)

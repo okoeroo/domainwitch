@@ -52,40 +52,6 @@ def analyse_http(scheme: str, hostname: str, port: int):
             url, r.status_code, None, None)
 
 
-def huntredirect(prey: dict, target: str):
-    port_list = huntredirect_get_defaults()
-
-    for port, scheme in port_list.items():
-        if f"{PREFIX_TCP}{port}" not in prey:
-            continue
-
-        if not prey[f"{PREFIX_TCP}{port}"]:
-            prey[f"{PREFIX}{port}"] = f"n/a: no TCP to {port}"
-            continue
-
-        # Start scan
-        url = build_url(scheme=scheme, host=target, port=port)
-        res = analyse_http(url)
-
-        if res is None:
-            prey[f"{PREFIX}{port}"] = None
-        elif type(res) is str:
-            prey[f"{PREFIX}{port}"] = res
-        else:
-            res_txt = f"url: {res[0]} :: status: {res[1]} -> location: {res[2]}"
-            prey[f"{PREFIX}{port}"] = res_txt
-
-    return prey
-
-
-def huntredirect_reformat_results_into_bag(results: list[tuple], bag):
-    for b in bag:
-        for res in results:
-            if res[2] == b['FQDN']:
-                b[res[3]] = res[4]
-    return bag
-
-
 def huntredirect_filter_targets(bag) -> list[tuple]:
     target_http_endpoint_list = huntredirect_get_defaults()
 

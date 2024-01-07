@@ -4,9 +4,9 @@ import sys
 import asyncio
 
 from huntsupport.supportfiles   import write_csv, openfile
-from huntdns.huntdns            import huntdns, huntdns_multi_target, huntdns_reformat_results_into_bag
-from hunttcp.hunttcp            import hunttcp, hunttcp_multi_target, hunttcp_reformat_results_into_bag
-from hunthttp.huntredirect      import huntredirect, huntredirect_multi_target, huntredirect_reformat_results_into_bag
+from huntdns.huntdns            import huntdns_multi_target, huntdns_reformat_results_into_bag
+from hunttcp.hunttcp            import hunttcp_multi_target, hunttcp_reformat_results_into_bag
+from hunthttp.huntredirect      import huntredirect_multi_target, huntredirect_reformat_results_into_bag
 
 
 def init_prey(target: str) -> dict:

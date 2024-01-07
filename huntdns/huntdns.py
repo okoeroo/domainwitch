@@ -41,25 +41,6 @@ async def query_dns(hostname, r_type='A'):
         return (HUNT_ID, False, hostname, r_type, None, f"Error: Unexpected: {err} :: {type(err)}")
 
 
-async def start_dns_scan(target: str, target_r_types: list[str]):
-    tasks = [query_dns(target, r_type) for r_type in target_r_types]
-    return await asyncio.gather(*tasks)
- 
-
-def huntdns_reformat_results(results: list[tuple], prey):
-    for res in results:
-        if res[1]:
-            prey[res[3]] = res[4]
-    return prey
-
-    
-def huntdns(prey, target):
-    target_r_types = huntdns_get_defaults()
-    results = asyncio.run(start_dns_scan(target, target_r_types))
-    prey = huntdns_reformat_results(results, prey)
-
-    return prey
-
 def huntdns_reformat_results_into_bag(results: list[tuple], bag):
     for b in bag:
         for res in results:

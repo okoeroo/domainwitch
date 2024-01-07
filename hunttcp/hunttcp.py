@@ -37,35 +37,6 @@ async def check_service(host, port, timeout=5):
         return (HUNT_ID, False, host, port)
 
 
-async def check_services(services, timeout=5):
-    tasks = [check_service(host, port, timeout) for host, port in services]
-    return await asyncio.gather(*tasks)
-
-
-def hunttcp_reformat_results(results: list[tuple], prey):
-    for r in results:
-        # Format is connection booling, target host, port
-        id = PREFIX + str(r[3])
-        # Note: it is vital for other modules to use bool
-        prey[id] = r[1]
-
-    return prey
-
-
-def hunttcp(prey: dict, target: str):
-    target_tcp_ports = hunttcp_get_defaults()
-
-    services = []
-    for p in target_tcp_ports:
-        services.append((target, p))
-
-    timeout = 3
-    results = asyncio.run(check_services(services, timeout))
-    prey = hunttcp_reformat_results(results, prey)
-
-    return prey
-
-
 def hunttcp_reformat_results_into_bag(results: list[tuple], bag):
     for b in bag:
         for res in results:

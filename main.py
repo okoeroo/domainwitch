@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import sys
+import asyncio
 
 from huntsupport.supportfiles   import write_csv, openfile
-from huntdns.huntdns            import huntdns
-from hunttcp.hunttcp            import hunttcp
-from hunthttp.huntredirect      import huntredirect
+from huntdns.huntdns            import huntdns, huntdns_multi_target, huntdns_reformat_results_into_bag
+from hunttcp.hunttcp            import hunttcp, hunttcp_multi_target, hunttcp_reformat_results_into_bag
+from hunthttp.huntredirect      import huntredirect, huntredirect_multi_target, huntredirect_reformat_results_into_bag
 
 
 def init_prey(target: str) -> dict:
@@ -15,25 +16,23 @@ def init_prey(target: str) -> dict:
 
 
 def witchhunt(targets) -> None:
-    out = []
+    bag = []
+    for t in targets:
+        bag.append(init_prey(t))
 
-    for target in targets:
-        # Prep results
-        prey = init_prey(target)
+    # HuntDNS
+    results = asyncio.run(huntdns_multi_target(targets))
+    bag = huntdns_reformat_results_into_bag(results, bag)
 
-        # Hunt DNS
-        prey = huntdns(prey, target)
+    # HuntTCP
+    results = asyncio.run(hunttcp_multi_target(targets))
+    bag = hunttcp_reformat_results_into_bag(results, bag)
 
-        # Hunt TCP
-        prey = hunttcp(prey, target)
+    #HuntRedirect
+    results = huntredirect_multi_target(bag)
+    bag = huntredirect_reformat_results_into_bag(results, bag)
 
-        # Hunt HTTP redirect
-        prey = huntredirect(prey, target)
-
-        # Gather output per target
-        out.append(prey)
-
-    return out
+    return bag
 
 
 def main() -> None:

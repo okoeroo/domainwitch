@@ -8,3 +8,5 @@ See [requirements.txt](requirements.txt) for the current dependencies.
 ```bash
 python3 main.py <input file> <output file>
 ```
+
+Warning: TCP checker is unstable in large list quantities!

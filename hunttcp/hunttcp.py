@@ -1,5 +1,6 @@
 import asyncio
-
+import resource
+import sys
 
 HUNT_ID = "hunttcp"
 PREFIX = "port_"
@@ -51,8 +52,13 @@ def hunttcp_reformat_results_into_bag(results: list[tuple], bag):
 
 async def hunttcp_multi_target(targets):
     target_tcp_ports = hunttcp_get_defaults()
-    timeout = 5
-    chunk_size = 1000
+    timeout = 30
+    
+    # Upgrade Resource limit for number of open files
+    resource.setrlimit(resource.RLIMIT_NOFILE, (2**32, resource.RLIM_INFINITY))
+
+    # Setting chunk size
+    chunk_size = 2**16
 
     objectives = [(target, port, timeout) for target in targets for port in target_tcp_ports]
     tasks = []

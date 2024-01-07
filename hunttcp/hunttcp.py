@@ -1,6 +1,7 @@
 import asyncio
 
 
+HUNT_ID = "hunttcp"
 PREFIX = "port_"
 
 
@@ -26,14 +27,14 @@ async def check_service(host, port, timeout=5):
         writer.close()
         await writer.wait_closed()
         print(f"Service at {host}:{port} is up")
-        return (True, host, port)
+        return (HUNT_ID, True, host, port)
 
     except (ConnectionRefusedError, asyncio.TimeoutError):
         print(f"Service at {host}:{port} is down")
-        return (False, host, port)
+        return (HUNT_ID, False, host, port)
     except Exception as err:
         print(f"TCP error: ({host}:{port}) {err}")
-        return (False, host, port)
+        return (HUNT_ID, False, host, port)
 
 
 async def check_services(services, timeout=5):
@@ -41,12 +42,12 @@ async def check_services(services, timeout=5):
     return await asyncio.gather(*tasks)
 
 
-def reformat_results(results: list[tuple], prey):
+def hunttcp_reformat_results(results: list[tuple], prey):
     for r in results:
         # Format is connection booling, target host, port
-        id = PREFIX + str(r[2])
+        id = PREFIX + str(r[3])
         # Note: it is vital for other modules to use bool
-        prey[id] = r[0]
+        prey[id] = r[1]
 
     return prey
 
@@ -60,6 +61,25 @@ def hunttcp(prey: dict, target: str):
 
     timeout = 3
     results = asyncio.run(check_services(services, timeout))
-    prey = reformat_results(results, prey)
+    prey = hunttcp_reformat_results(results, prey)
 
     return prey
+
+
+def hunttcp_reformat_results_into_bag(results: list[tuple], bag):
+    for b in bag:
+        for res in results:
+            if res[2] == b['FQDN']:
+                # Format is connection booling, target host, port
+                id = PREFIX + str(res[3])
+                # Note: it is vital for other modules to use bool
+                b[id] = res[1]
+
+    return bag
+
+
+async def hunttcp_multi_target(targets):
+    target_tcp_ports = hunttcp_get_defaults()
+    timeout = 5
+    tasks = [check_service(target, port, timeout) for target in targets for port in target_tcp_ports]
+    return await asyncio.gather(*tasks)

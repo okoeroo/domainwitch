@@ -1,7 +1,7 @@
 import csv
-from huntdns import huntdns_fieldnames
-from hunttcp import hunttcp_fieldnames
-from huntredirect import huntredirect_fieldnames
+from huntdns.huntdns import huntdns_fieldnames
+from hunttcp.hunttcp import hunttcp_fieldnames
+from hunthttp.huntredirect import huntredirect_fieldnames
 
 
 def openfile(filename: str) -> list:

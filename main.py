@@ -2,10 +2,10 @@
 
 import sys
 
-from supportfiles   import write_csv, openfile
-from huntdns        import huntdns
-from hunttcp        import hunttcp
-from huntredirect   import huntredirect
+from huntsupport.supportfiles   import write_csv, openfile
+from huntdns.huntdns            import huntdns
+from hunttcp.hunttcp            import hunttcp
+from hunthttp.huntredirect      import huntredirect
 
 
 def init_prey(target: str) -> dict:

@@ -1,6 +1,6 @@
 from httpx import Response
-from supporthttp import build_url, fetch_http
-from hunttcp import PREFIX as PREFIX_TCP
+from hunthttp.supporthttp import build_url, fetch_http
+from hunttcp.hunttcp import PREFIX as PREFIX_TCP
 
 
 PREFIX = "redirect_http_"

@@ -51,6 +51,26 @@ def hunttcp_reformat_results_into_bag(results: list[tuple], bag):
 
 async def hunttcp_multi_target(targets):
     target_tcp_ports = hunttcp_get_defaults()
-    timeout = 30
-    tasks = [check_service(target, port, timeout) for target in targets for port in target_tcp_ports]
-    return await asyncio.gather(*tasks)
+    timeout = 5
+    chunk_size = 1000
+
+    objectives = [(target, port, timeout) for target in targets for port in target_tcp_ports]
+    tasks = []
+    output = []
+
+    for obj in objectives:
+        target, port, timeout = obj
+        task = asyncio.create_task(check_service(target, port, timeout))
+        tasks.append(task)
+
+        if len(tasks) == chunk_size:
+            # Wait for the current chunk of tasks to complete
+            res = await asyncio.gather(*tasks)
+            output = output + res
+            tasks = []
+
+    # Ensure that the remaining tasks are awaited
+    res = await asyncio.gather(*tasks)
+    output = output + res
+
+    return output

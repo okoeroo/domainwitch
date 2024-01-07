@@ -37,17 +37,19 @@ def gen_field_id(scheme:str, port:int) -> str:
 def analyse_http(scheme: str, hostname: str, port: int):
     url = build_url(scheme=scheme, host=hostname, port=port)
 
-    r = fetch_http(url, timeout=4)
+    r = fetch_http(url, timeout=10)
     if type(r) is not Response:
+        print(f"http redirect: {url} :: Error: not responding.")
         return (False, scheme, hostname, port, 
                 url, None, None, r)
 
     if r.status_code >= 300 and r.status_code < 400:
-        # tup = analyse_http(r.headers['Location'])
+        print(f"http redirect: {url} :: redirect to: {r.headers['Location']}")
         return (True, scheme, hostname, port, 
                 url, r.status_code, r.headers['Location'],
                 None)
 
+    print(f"http redirect: {url} :: no redirect")
     return (True, scheme, hostname, port, 
             url, r.status_code, None, None)
 

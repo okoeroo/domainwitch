@@ -1,1 +1,4 @@
 *.pyc
+test/input.csv
+test/output.csv
+.DS_store

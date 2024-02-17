@@ -1,7 +1,4 @@
 import csv
-from huntdns.huntdns import huntdns_fieldnames
-from hunttcp.hunttcp import hunttcp_fieldnames
-from hunthttp.huntredirect import huntredirect_fieldnames
 
 
 def openfile(filename: str) -> list:
@@ -12,15 +9,9 @@ def openfile(filename: str) -> list:
     return lines
 
 
-def write_csv(outputfile: str, output_dict_list: dict) -> None:
+def write_csv(fieldnames, outputfile: str, output_dict_list: dict) -> None:
     if not output_dict_list and len(output_dict_list) == 0:
         raise RuntimeError("There is no output to write.")
-
-    # Fetch fieldnames from first line of the dict keys
-    fieldnames = ['FQDN'] + \
-                    huntdns_fieldnames() + \
-                    hunttcp_fieldnames() + \
-                    huntredirect_fieldnames()
 
     # write csv
     with open(outputfile, 'w') as csvfile:

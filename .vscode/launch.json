@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "main.py",
-            "args": ["/tmp/lijstje.csv", "/tmp/output.csv"],
+            "args": ["test/input.csv", "test/output.csv"],
             "console": "integratedTerminal",
             "justMyCode": true
         }

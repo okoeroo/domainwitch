@@ -1,5 +1,5 @@
 import asyncio
-from huntsupport.supportdns import query_dns
+from huntsupport.supportdns import query_dns, get_hostname, get_r_type, get_rdatas
 
 
 HUNT_ID = "huntdns"
@@ -18,9 +18,10 @@ def huntdns_fieldnames() -> list[str]:
 def huntdns_reformat_results_into_bag(results: list[tuple], bag):
     for b in bag:
         for res in results:
-            if res[2] == b['FQDN']:
-                b[res[3]] = res[4]
+            if get_hostname(res) == b['FQDN']:
+                b[get_r_type(res)] = get_rdatas(res)
     return bag
+
 
 async def huntdns_multi_target(targets):
     target_r_types = huntdns_get_defaults()

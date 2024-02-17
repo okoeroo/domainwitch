@@ -26,3 +26,40 @@ async def query_dns(hunt_id, hostname, r_type='A'):
     except Exception as err:
         print(f"Unexpected ({hostname}:{r_type}) {err}, {type(err)}")
         return (hunt_id, False, hostname, r_type, None, f"Error: Unexpected: {err} :: {type(err)}")
+
+
+def get_hunt_id(results) -> str:
+    if results is None:
+        raise TypeError("No data provided")
+
+    return results[0]
+
+def get_success(results) -> bool:
+    if results is None:
+        raise TypeError("No data provided")
+
+    return results[1]
+
+def get_hostname(results) -> str:
+    if results is None:
+        raise TypeError("No data provided")
+
+    return results[2]
+
+def get_r_type(results) -> str:
+    if results is None:
+        raise TypeError("No data provided")
+
+    return results[3]
+
+def get_rdatas(results) -> str:
+    if results is None:
+        raise TypeError("No data provided")
+
+    return results[4]
+
+def get_error(results) -> str:
+    if results is None:
+        raise TypeError("No data provided")
+
+    return results[5]
